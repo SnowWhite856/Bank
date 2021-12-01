@@ -9,15 +9,20 @@ class DataBase:
         self.con = mysql.connector.connect(host=self.host, user=self.username, password=self.password, database=self.bd)
         self.cursor = self.con.cursor()
         self.sqlL = "SELECT username, password FROM dane WHERE username = %s AND password = %s"
+        self.sqlR = "INSERT INTO dane(username, password, email, NrTel) VALUES (%s, %s, %s, %s)"
 
     def Login(self, username, password):
         login = (username, password)
         self.cursor.execute(self.sqlL, login)
         result = self.cursor.fetchone()
-        return result
+        if result != None:
+            return 1
+        else:
+            return 0
 
-    def Register(self, login, password, email, pyt, NrTel):
-        pass
+    def Register(self, username, password, email, NrTel):
+        register = (username, password, email, NrTel)
+        self.cursor.execute(self.sqlR, register)
 
     def Historycheck(self):
         pass

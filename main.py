@@ -2,10 +2,13 @@ from tkinter import *
 from Sign_in import SignIn
 from DataBase import DataBase
 from MainMenu import MainMenu
+from Sign_up import SignUp
 
 DataBase = DataBase()
 MainMenu = MainMenu()
-SignIn = SignIn(DataBase)
+SignUp = SignUp(DataBase)
+SignIn = SignIn(DataBase, SignUp)
 
 SignIn.SignInWindow()
-MainMenu.MainMenuWindow()
+if SignIn.result == 1:
+    MainMenu.MainMenuWindow()

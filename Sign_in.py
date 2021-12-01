@@ -1,10 +1,11 @@
 from tkinter import *
 
 class SignIn():
-    def __init__(self, DataBase):
+    def __init__(self, DataBase, SignUp):
         self.username = ""
         self.password = ""
         self.DataBase = DataBase
+        self.SignUp = SignUp
         self.result = None
         self.SignWin = Tk()
 
@@ -35,9 +36,10 @@ class SignIn():
                         command=lambda:self.SetLogin(EUsername.get(), EPassword.get()))
         Login.pack()
 
-        SignUp = Button(self.SignWin,
-                        text="Don't have a account? Sing Up")
-        SignUp.pack()
+        SignUpB = Button(self.SignWin,
+                        text="Don't have a account? Sing Up",
+                        command=self.Registration)
+        SignUpB.pack()
 
         self.SignWin.mainloop()
 
@@ -46,5 +48,8 @@ class SignIn():
         self.password = password
         self.result = self.DataBase.Login(self.username, self.password)
         print(self.result)
-        if self.result == (username, password):
+        if self.result == 1:
             self.SignWin.destroy()
+
+    def Registration(self):
+        self.SignUp.SignUpWindow()
