@@ -2,25 +2,26 @@ import mysql.connector
 from tkinter import *
 
 class MainMenu:
-    def __init__(self, History):
+    def __init__(self, DataBase, User):
         self.MainMenuWin = None
-        self.History = History
-        self.Balance = None
+
+        self.DataBase = DataBase
+        self.User = User
 
     def MainMenuWindow(self):
-        
+
 
         self.MainMenuWin = Tk()
         
         self.MainMenuWin.geometry("250x400")
         
         BalanceL = Label(self.MainMenuWin,
-                        text=self.Balance)
+                        text=self.User.balance)
         BalanceL.pack()
 
-        HistoryB = Button(self.MainMenuWin,
-                        command=self.History.HistoryWin)
-        HistoryB.pack()
+        # HistoryB = Button(self.MainMenuWin,
+        #                 command=self.History.HistoryWin)
+        # HistoryB.pack()
 
         self.MainMenuWin.mainloop()
 

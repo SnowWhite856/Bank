@@ -1,10 +1,9 @@
 from tkinter import *
 
 class SignIn():
-    def __init__(self, DataBase, SignUp):
-        self.username = ""
-        self.password = ""
+    def __init__(self, DataBase, SignUp, User):
         self.DataBase = DataBase
+        self.User = User
         self.SignUp = SignUp
         self.result = None
         self.SignWin = Tk()
@@ -44,9 +43,7 @@ class SignIn():
         self.SignWin.mainloop()
 
     def SetLogin(self, username, password):
-        self.username = username
-        self.password = password
-        self.result = self.DataBase.Login(self.username, self.password)
+        self.result = self.DataBase.Login(username, password)
         print(self.result)
         if self.result == 1:
             self.SignWin.destroy()

@@ -1,7 +1,7 @@
 import mysql.connector
 
 class DataBase:
-    def __init__(self):
+    def __init__(self, User):
         self.host = "localhost"
         self.username = "root"
         self.password = ""
@@ -9,12 +9,14 @@ class DataBase:
         self.con = mysql.connector.connect(host=self.host, user=self.username, password=self.password, database=self.bd)
         self.cursor = self.con.cursor()
 
+        self.User = User
+
         #Login/Register
-        self.sqlL = "SELECT username, password FROM dane WHERE username = %s AND password = %s"
+        self.sqlL = "SELECT * FROM dane WHERE username = %s AND password = %s"
         self.sqlR = "INSERT INTO dane(username, password, email, NrTel) VALUES (%s, %s, %s, %s)"
 
         #Menu
-        self.sqlB = "SELECT balance"
+        self.sqlB = "SELECT balance FROM dane WHERE %s"
 
         #History
         self.sqlH = "SELECT * FROM history WHERE dane.id = history.id_dane"
@@ -24,6 +26,7 @@ class DataBase:
         self.cursor.execute(self.sqlL, login)
         result = self.cursor.fetchone()
         if result != None:
+            self.User.SetData(result)
             return 1
         else:
             return 0
