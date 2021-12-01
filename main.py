@@ -3,9 +3,10 @@ from Sign_in import SignIn
 from DataBase import DataBase
 from MainMenu import MainMenu
 from Sign_up import SignUp
+from History import History
 
 DataBase = DataBase()
-MainMenu = MainMenu()
+MainMenu = MainMenu(History)
 SignUp = SignUp(DataBase)
 SignIn = SignIn(DataBase, SignUp)
 
