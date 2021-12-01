@@ -13,6 +13,9 @@ class DataBase:
         self.sqlL = "SELECT username, password FROM dane WHERE username = %s AND password = %s"
         self.sqlR = "INSERT INTO dane(username, password, email, NrTel) VALUES (%s, %s, %s, %s)"
 
+        #Menu
+        self.sqlB = "SELECT balance"
+
         #History
         self.sqlH = "SELECT * FROM history WHERE dane.id = history.id_dane"
 
@@ -29,6 +32,9 @@ class DataBase:
         register = (username, password, email, NrTel)
         self.cursor.execute(self.sqlR, register)
         self.con.commit()
+
+    def CheckBalance(self):
+        pass
 
     def Historycheck(self):
         pass
