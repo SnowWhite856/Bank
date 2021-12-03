@@ -19,7 +19,11 @@ class DataBase:
         self.sqlB = "SELECT balance FROM dane WHERE %s"
 
         #History
-        self.sqlH = "SELECT * FROM history WHERE dane.id = history.id_dane"
+        self.sqlHS = "SELECT * FROM history WHERE dane.id = history.id_dane AND dane.id = %s"
+
+        #Transfer
+        self.sqlC = "UPDATE dane SET balance = %s WHERE dane.username = %s" 
+        self.sqlCT = "SELECT balance FROM dane WHERE username = %s"
 
     def Login(self, username, password):
         login = (username, password)
@@ -36,8 +40,30 @@ class DataBase:
         self.cursor.execute(self.sqlR, register)
         self.con.commit()
 
-    def CheckBalance(self):
-        pass
+    def Transfer(self, UserF, UserT, Hm):
+        print(self.User.balance)
+        print(type(self.User.balance))
+        UserT = (UserT, )
+        balanceT = self.cursor.execute(self.sqlCT, UserT)
 
-    def Historycheck(self):
-        pass
+        balance = int(self.User.balance) - int(Hm)
+        print(balance)
+
+        FChange = (UserF, balance)
+        TChange = (UserT, (int(balanceT)+int(Hm)))
+        self.cursor.execute(self.sqlC, FChange)
+        self.cursor.execute(self.sqlC, TChange)
+
+    def HistoryShow(self, Hlist):
+        result = self.cursor.execute(self.sqlHS)
+        for item in result:
+            Hlist.append(item[0])
+        return result
+
+    def HistorySelect(self, Selection):
+        if Selection != None:
+            select = (Selection, )
+            result = self.cursor.execute(self.sqlHS, select)
+            return result
+                
+

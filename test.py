@@ -1,9 +1,9 @@
 from tkinter import *
 
-def c(b):
-    b.pack_forget()
-
 win = Tk()
+
+list = Listbox(win)
+list.pack()
 
 
 win.mainloop()

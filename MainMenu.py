@@ -2,12 +2,13 @@ import mysql.connector
 from tkinter import *
 
 class MainMenu:
-    def __init__(self, DataBase, User, History):
+    def __init__(self, DataBase, User, History, Transfer):
         self.MainMenuWin = None
 
         self.DataBase = DataBase
         self.User = User
         self.History = History
+        self.Transfer = Transfer
 
     def MainMenuWindow(self):
 
@@ -20,7 +21,13 @@ class MainMenu:
                         text=self.User.balance)
         BalanceL.pack()
 
+        TransferB = Button(self.MainMenuWin,
+                            text="Transfer",
+                            command=self.Transfer.TransferWindow)
+        TransferB.pack()
+
         HistoryB = Button(self.MainMenuWin,
+                        text="History",
                         command=self.OpenHistory)
         HistoryB.pack()
 
