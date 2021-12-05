@@ -1,4 +1,5 @@
 import mysql.connector
+from tkinter import *
 
 class DataBase:
     def __init__(self, User):
@@ -22,8 +23,8 @@ class DataBase:
         self.sqlHS = "SELECT * FROM history WHERE dane.id = history.id_dane AND dane.id = %s"
 
         #Transfer
-        self.sqlC = "UPDATE dane SET balance = %s WHERE dane.username = %s" 
-        self.sqlCT = "SELECT balance FROM dane WHERE username = %s"
+        self.sqlC = "UPDATE dane SET balance = %s WHERE id = %s" 
+        self.sqlCT = "SELECT balance FROM dane WHERE id = %s"
 
     def Login(self, username, password):
         login = (username, password)
@@ -40,19 +41,27 @@ class DataBase:
         self.cursor.execute(self.sqlR, register)
         self.con.commit()
 
-    def Transfer(self, UserF, UserT, Hm):
-        print(self.User.balance)
-        print(type(self.User.balance))
-        UserT = (UserT, )
-        balanceT = self.cursor.execute(self.sqlCT, UserT)
+    def Transfer(self, UserT, Hm):
+        if Hm != None or Hm != 0: 
+            print(self.User.balance)
+            print(type(self.User.balance))
+            UserT = (UserT, )
+            self.cursor.execute(self.sqlCT, UserT)
 
-        balance = int(self.User.balance) - int(Hm)
-        print(balance)
+            balanceT = self.cursor.fetchone()
 
-        FChange = (UserF, balance)
-        TChange = (UserT, (int(balanceT)+int(Hm)))
-        self.cursor.execute(self.sqlC, FChange)
-        self.cursor.execute(self.sqlC, TChange)
+            balanceT = balanceT[0]
+
+            balance = int(self.User.balance) - int(Hm)
+
+            balanceT = balanceT + int(Hm)
+            
+            FChange = (balance, self.User.id)
+            TChange = (balanceT, UserT[0])
+            self.cursor.execute(self.sqlC, FChange)
+            self.con.commit()
+            self.cursor.execute(self.sqlC, TChange)
+            self.con.commit()
 
     def HistoryShow(self, Hlist):
         result = self.cursor.execute(self.sqlHS)

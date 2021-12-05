@@ -1,11 +1,11 @@
 class User:
     def __init__(self):
-        self.id = None
+        self.id = 0
         self.username = None
         self.password = None
         self.email = None
         self.nrtel = None
-        self.balance = None
+        self.balance = 0
     
     def SetData(self, Data):
         self.id = Data[0]

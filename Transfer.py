@@ -35,7 +35,7 @@ class Transfer:
 
         Send = Button(self.window,
                         text="Send",
-                        command=self.DataBase.Transfer(self.User.id, UserTE.get(), HmE.get()))
+                        command=lambda:self.DataBase.Transfer(UserTE.get(), HmE.get()))
         Send.pack()
 
         self.window.mainloop()
