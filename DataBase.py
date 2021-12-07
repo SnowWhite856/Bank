@@ -1,5 +1,6 @@
 import mysql.connector
 from tkinter import *
+import datetime
 
 class DataBase:
     def __init__(self, User):
@@ -25,6 +26,7 @@ class DataBase:
         #Transfer
         self.sqlC = "UPDATE dane SET balance = %s WHERE id = %s" 
         self.sqlCT = "SELECT balance FROM dane WHERE id = %s"
+        self.sqlAH = "INSERT INTO history(Ufrom, Uto, date, hm) VALUES (%s, %s, %s, %s)"
 
     def Login(self, username, password):
         login = (username, password)
@@ -45,23 +47,42 @@ class DataBase:
         if Hm != None or Hm != 0: 
             print(self.User.balance)
             print(type(self.User.balance))
-            UserT = (UserT, )
-            self.cursor.execute(self.sqlCT, UserT)
+            print(UserT)
+            print(type(UserT))
+            print(self.User.id)
+            print(type(self.User.balance))
+            UserTT = (UserT, )
+            self.cursor.execute(self.sqlCT, UserTT)
 
             balanceT = self.cursor.fetchone()
 
-            balanceT = balanceT[0]
+            if balanceT != None and int(UserT) != self.User.id:
+                balanceT = balanceT[0]
 
-            balance = int(self.User.balance) - int(Hm)
+                balance = int(self.User.balance) - int(Hm)
 
-            balanceT = balanceT + int(Hm)
-            
-            FChange = (balance, self.User.id)
-            TChange = (balanceT, UserT[0])
-            self.cursor.execute(self.sqlC, FChange)
-            self.con.commit()
-            self.cursor.execute(self.sqlC, TChange)
-            self.con.commit()
+                balanceT = balanceT + int(Hm)
+                
+                if balance > 0:
+                    self.User.balance = balance
+                    FChange = (balance, self.User.id)
+                    TChange = (balanceT, UserTT[0])
+                    self.cursor.execute(self.sqlC, FChange)
+                    self.con.commit()
+                    self.cursor.execute(self.sqlC, TChange)
+                    self.con.commit()
+                    self.TransferHistoryChange(self.User.id, UserT, Hm)
+                else:
+                    print("Not enough money")
+            else:
+                print("Wrong id")
+
+    def TransferHistoryChange(self, UserF, UserT, Hm):
+        today = datetime.datetime.now()
+        fullDay =  today.strftime("%x") + " " + today.strftime("%X")
+        historyChange = (str(UserF), UserT, fullDay, Hm)
+        self.cursor.execute(self.sqlAH, historyChange)
+        self.con.commit()
 
     def HistoryShow(self, Hlist):
         result = self.cursor.execute(self.sqlHS)

@@ -11,8 +11,6 @@ class MainMenu:
         self.Transfer = Transfer
 
     def MainMenuWindow(self):
-
-
         self.MainMenuWin = Tk()
         
         self.MainMenuWin.geometry("250x400")
